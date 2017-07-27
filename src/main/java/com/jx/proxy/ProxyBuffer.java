@@ -37,7 +37,7 @@ public class ProxyBuffer {
 
     private final ByteBuffer buffer = ByteBuffer.allocateDirect(BUFFER_SIZE);
     private BufferState state = BufferState.READY_TO_WRITE;
-
+    private int size;
     public boolean isReadyToRead() {
         return state == BufferState.READY_TO_READ;
     }
@@ -48,20 +48,27 @@ public class ProxyBuffer {
 
     public void writeFrom(SocketChannel channel) throws IOException {
         int read = channel.read(buffer);
-        if (read == -1) throw new ClosedChannelException();
-
+        if (read == -1) {
+        	throw new ClosedChannelException();
+        	//System.out.println("ClosedChannelException:"+channel.getRemoteAddress());
+        	//return ;
+        }
+        size=read;
         if (read > 0) {
             buffer.flip();
             state = BufferState.READY_TO_READ;
         }
+        System.out.println(String.format("*** getDate %s ===>> %s -%s ***", channel.getRemoteAddress(),channel.getLocalAddress(),read));
     }
 
     public void writeTo(SocketChannel channel) throws IOException {
         channel.write(buffer);
-        if (buffer.remaining() == 0) {
+        int write=buffer.remaining();
+        if (write == 0) {
             buffer.clear();
             state = BufferState.READY_TO_WRITE;
         }
+        System.out.println(String.format("*** sendDate %s ===>> %s  -%s ***", channel.getLocalAddress(),channel.getRemoteAddress(),size));
     }
 
 }
