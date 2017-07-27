@@ -33,7 +33,8 @@ public class Configurer {
 
     private static Properties loadProperties() throws IOException {
         final Properties properties = new Properties();
-        final InputStream stream = Configurer.class.getResourceAsStream(CONFIGURATION_FILE);
+        final InputStream stream = Configurer.class.getClassLoader().getResourceAsStream(CONFIGURATION_FILE);        
+        		//Configurer.class.getResourceAsStream(CONFIGURATION_FILE);
         properties.load(stream);
         return properties;
     }

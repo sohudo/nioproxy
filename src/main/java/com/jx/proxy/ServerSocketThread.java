@@ -69,7 +69,7 @@ public class ServerSocketThread extends Thread {
         final ProxyTaskHandler proxyTaskHandler = new ProxyTaskHandler(socketChannel, remoteSocketChannel, selector);
         socketChannel.register(this.selector, SelectionKey.OP_READ, proxyTaskHandler);
         remoteSocketChannel.register(this.selector, SelectionKey.OP_READ, proxyTaskHandler);
-        System.out.println(String.format("*** Connection  from %s to %s***", socketChannel.getRemoteAddress(),socketChannel.getLocalAddress()));
+        System.out.println(String.format("*** Connection  from %s--%s ===>> %s-- %s***", socketChannel.getRemoteAddress(),socketChannel.getLocalAddress(),remoteSocketChannel.getLocalAddress(),remoteSocketChannel.getRemoteAddress()));
     }
 
     private SocketChannel initRemoteServerChannel() throws IOException {
